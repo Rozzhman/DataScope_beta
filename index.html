@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DataScope — Проверка контрагентов</title>
+  <style>
+    :root {
+      --bg: #07122f;
+      --bg2: #0b1b45;
+      --card: rgba(11, 26, 63, 0.72);
+      --line: rgba(126, 173, 255, 0.22);
+      --text: #eaf2ff;
+      --muted: #aac0e8;
+      --brand: #4ea1ff;
+      --brand2: #2a68ff;
+      --ok: #7df3c6;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: "Segoe UI", "Inter", Arial, sans-serif;
+      background:
+        radial-gradient(1000px 500px at 10% -10%, rgba(79, 161, 255, 0.25), transparent 55%),
+        radial-gradient(900px 500px at 110% 20%, rgba(42, 104, 255, 0.22), transparent 55%),
+        linear-gradient(145deg, var(--bg), var(--bg2));
+    }
+
+    .wrap {
+      width: min(1080px, 92vw);
+      margin: 48px auto;
+      position: relative;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 24px;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 16px 50px rgba(0, 0, 0, 0.28);
+    }
+
+    .hero {
+      padding: 38px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -120px -180px auto;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(78, 161, 255, 0.33), transparent 70%);
+      pointer-events: none;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #5fb4ff, #2d6cff);
+      color: #fff;
+      font-size: 24px;
+      font-weight: 700;
+      box-shadow: 0 8px 20px rgba(40, 112, 255, 0.45);
+    }
+
+    .brand {
+      font-size: 34px;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: 0.2px;
+    }
+
+    .subtitle {
+      margin: 0 0 24px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.5;
+      max-width: 680px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-weight: 700;
+      font-size: 15px;
+      transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(130deg, var(--brand), var(--brand2));
+      box-shadow: 0 10px 22px rgba(40, 110, 255, 0.45);
+    }
+
+    .btn-secondary {
+      color: #d9e8ff;
+      border: 1px solid var(--line);
+      background: rgba(17, 35, 78, 0.7);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .meta {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .right {
+      padding: 26px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .chip {
+      border: 1px solid var(--line);
+      background: rgba(15, 36, 84, 0.7);
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .chip h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .chip p {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .check {
+      color: var(--ok);
+      margin-right: 6px;
+      font-weight: 700;
+    }
+
+    .bottom {
+      margin-top: 22px;
+      padding: 24px;
+    }
+
+    .bottom h2 {
+      margin: 0 0 14px;
+      font-size: 22px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .step {
+      background: rgba(10, 27, 67, 0.65);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .step b {
+      color: var(--text);
+      font-size: 15px;
+    }
+
+    @media (max-width: 930px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .brand {
+        font-size: 30px;
+      }
+
+      .subtitle {
+        font-size: 17px;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="grid">
+      <article class="panel hero">
+        <div class="brand-row">
+          <div class="logo">D</div>
+          <div class="brand">DataScope</div>
+        </div>
+        <p class="subtitle">
+          Настольная система для глубокой проверки контрагентов, анализа рисков и
+          автоматического формирования экспертных отчетов.
+        </p>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://github.com/Rozzhman/Datascope/releases/latest/download/DataScopeSetup.exe">
+            Скачать установщик
+          </a>
+          <a class="btn btn-secondary" href="https://github.com/Rozzhman/Datascope/releases">
+            Все релизы
+          </a>
+        </div>
+        <div class="meta">Windows • Последняя версия из GitHub Releases</div>
+      </article>
+
+      <aside class="panel right">
+        <div class="chip">
+          <h3>Что внутри</h3>
+          <p><span class="check">✓</span>Проверка по госреестрам и открытым источникам</p>
+        </div>
+        <div class="chip">
+          <h3>Режимы</h3>
+          <p><span class="check">✓</span>Обычный и углубленный OSINT-анализ</p>
+        </div>
+        <div class="chip">
+          <h3>Отчет</h3>
+          <p><span class="check">✓</span>DOCX с детализацией рисков и выводами</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="panel bottom">
+      <h2>Как установить</h2>
+      <div class="steps">
+        <div class="step"><b>1.</b> Скачайте <code>DataScopeSetup.exe</code> кнопкой выше.</div>
+        <div class="step"><b>2.</b> Запустите установщик и завершите установку.</div>
+        <div class="step"><b>3.</b> Откройте DataScope и войдите в аккаунт.</div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
